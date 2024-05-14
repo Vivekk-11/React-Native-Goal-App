@@ -8,28 +8,34 @@ interface Props {
 }
 
 const GoalItem = ({ item, handleDelete }: Props) => {
-
   const handlePress = () => {
-    handleDelete(item.key)
+    handleDelete(item.key);
   };
 
   return (
-    <Pressable onPress={handlePress}>
-      <View style={styles.goalItem}>
+    <View style={styles.goalItem}>
+      <Pressable
+        android_ripple={{ color: "#210644" }}
+        onPress={handlePress}
+        style={({ pressed }) => pressed && styles.pressedItem}
+      >
         <Text style={styles.goalText}>{item.text}</Text>
-      </View>
-    </Pressable>
+      </Pressable>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   goalItem: {
     margin: 8,
-    padding: 8,
     borderRadius: 6,
     backgroundColor: "#5e0acc",
   },
+  pressedItem: {
+    opacity: 0.5,
+  },
   goalText: {
+    padding: 8,
     color: "#fff",
   },
 });
