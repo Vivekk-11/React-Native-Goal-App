@@ -1,12 +1,24 @@
 import { Goal } from "@/app/(tabs)";
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Pressable } from "react-native";
 
-const GoalItem = ({item}: {item: Goal}) => {
+interface Props {
+  item: Goal;
+  handleDelete: (id: string) => void;
+}
+
+const GoalItem = ({ item, handleDelete }: Props) => {
+
+  const handlePress = () => {
+    handleDelete(item.key)
+  };
+
   return (
-    <View style={styles.goalItem}>
-      <Text style={styles.goalText}>{item.text}</Text>
-    </View>
+    <Pressable onPress={handlePress}>
+      <View style={styles.goalItem}>
+        <Text style={styles.goalText}>{item.text}</Text>
+      </View>
+    </Pressable>
   );
 };
 

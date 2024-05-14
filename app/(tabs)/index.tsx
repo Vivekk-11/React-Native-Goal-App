@@ -20,10 +20,14 @@ export default function HomeScreen() {
     setEnteredGoalText({ text: enteredText, key: `${Math.random()}` });
   };
 
-
   const handleSubmit = () => {
     setCourseGoals((prev) => [...prev, enteredGoalText]);
     setEnteredGoalText({ text: "", key: "" });
+  };
+
+  const handleDelete = (id: string) => {
+    const filteredGoals = courseGoals.filter((goal) => goal.key !== id);
+    setCourseGoals(filteredGoals);
   };
 
   return (
@@ -37,7 +41,9 @@ export default function HomeScreen() {
         <FlatList
           data={courseGoals}
           keyExtractor={(item) => item.key}
-          renderItem={({ item }: { item: Goal }) => <GoalItem item={item} />}
+          renderItem={({ item }: { item: Goal }) => (
+            <GoalItem item={item} handleDelete={handleDelete} />
+          )}
           alwaysBounceVertical={false}
         />
       </View>
