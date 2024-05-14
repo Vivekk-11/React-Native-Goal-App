@@ -1,17 +1,32 @@
 import { useState } from "react";
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  Button,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  FlatList,
+} from "react-native";
+
+interface Goal {
+  key: string;
+  text: string;
+}
 
 export default function HomeScreen() {
-  const [enteredGoalText, setEnteredGoalText] = useState("");
-  const [courseGoals, setCourseGoals] = useState<string[]>([]);
+  const [enteredGoalText, setEnteredGoalText] = useState<Goal>({
+    text: "",
+    key: "",
+  });
+  const [courseGoals, setCourseGoals] = useState<Goal[]>([]);
 
   const goalInputHandler = (enteredText: string) => {
-    setEnteredGoalText(enteredText);
+    setEnteredGoalText({ text: enteredText, key: `${Math.random()}` });
   };
 
   const addGoalHandler = () => {
     setCourseGoals((prev) => [...prev, enteredGoalText]);
-    setEnteredGoalText("");
+    setEnteredGoalText({ text: "", key: "" });
   };
 
   return (
@@ -21,16 +36,21 @@ export default function HomeScreen() {
           style={styles.textInput}
           placeholder="Your course goal!"
           onChangeText={goalInputHandler}
-          value={enteredGoalText}
+          value={enteredGoalText.text}
         />
         <Button title="Add Goal" onPress={addGoalHandler} />
       </View>
       <View style={styles.goalsContainer}>
-        {courseGoals.map((goal) => (
-          <View style={styles.goalItem} key={goal}>
-            <Text style={styles.goalText}>{goal}</Text>
-          </View>
-        ))}
+        <FlatList
+          data={courseGoals}
+          keyExtractor={(item) => item.key}
+          renderItem={({ item }: { item: Goal }) => (
+            <View style={styles.goalItem}>
+              <Text style={styles.goalText}>{item.text}</Text>
+            </View>
+          )}
+          alwaysBounceVertical={false}
+        />
       </View>
     </View>
   );
