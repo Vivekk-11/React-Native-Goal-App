@@ -1,30 +1,46 @@
-import { StyleSheet, View, Button, TextInput } from "react-native";
+import { StyleSheet, View, Button, TextInput, Modal } from "react-native";
 
 interface Props {
   inputHandler: (text: string) => void;
   handleSubmit: () => void;
   goalText: string;
+  visible: boolean;
+  closeModal: (value: false) => void;
 }
 
-const GoalInput = ({ inputHandler, goalText, handleSubmit }: Props) => {
+const GoalInput = ({
+  inputHandler,
+  goalText,
+  handleSubmit,
+  visible,
+  closeModal,
+}: Props) => {
   return (
-    <View style={styles.inputContainer}>
-      <TextInput
-        style={styles.textInput}
-        placeholder="Your course goal!"
-        onChangeText={inputHandler}
-        value={goalText}
-      />
-      <Button title="Add Goal" onPress={handleSubmit} />
-    </View>
+    <Modal visible={visible} animationType="slide">
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.textInput}
+          placeholder="Your course goal!"
+          onChangeText={inputHandler}
+          value={goalText}
+        />
+        <View style={styles.buttonContainer}>
+          <View style={styles.button}>
+            <Button title="Cancel" onPress={() => closeModal(false)} />
+          </View>
+          <View style={styles.button}>
+            <Button title="Add Goal" onPress={handleSubmit} />
+          </View>
+        </View>
+      </View>
+    </Modal>
   );
 };
 
 const styles = StyleSheet.create({
   inputContainer: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
     marginBottom: 24,
     borderBottomWidth: 1,
@@ -33,9 +49,17 @@ const styles = StyleSheet.create({
   textInput: {
     borderWidth: 1,
     borderColor: "#ccc",
-    width: "70%",
+    width: "90%",
     padding: 8,
     margin: 8,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    marginTop: 5,
+  },
+  button: {
+    width: "30%",
+    marginHorizontal: 16,
   },
 });
 

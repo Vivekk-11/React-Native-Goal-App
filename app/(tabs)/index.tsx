@@ -1,7 +1,7 @@
 import GoalInput from "@/components/GoalInput";
 import GoalItem from "@/components/GoalItem";
 import { useState } from "react";
-import { StyleSheet, View, FlatList } from "react-native";
+import { StyleSheet, View, FlatList, Button } from "react-native";
 
 export interface Goal {
   key: string;
@@ -10,7 +10,7 @@ export interface Goal {
 
 export default function HomeScreen() {
   const [courseGoals, setCourseGoals] = useState<Goal[]>([]);
-
+  const [modalIsVisible, setModalIsVisible] = useState(false);
   const [enteredGoalText, setEnteredGoalText] = useState<Goal>({
     text: "",
     key: "",
@@ -23,6 +23,7 @@ export default function HomeScreen() {
   const handleSubmit = () => {
     setCourseGoals((prev) => [...prev, enteredGoalText]);
     setEnteredGoalText({ text: "", key: "" });
+    setModalIsVisible(false);
   };
 
   const handleDelete = (id: string) => {
@@ -32,10 +33,17 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.appContainer}>
+      <Button
+        title="Your course goal!"
+        color="#5e0acc"
+        onPress={() => setModalIsVisible(true)}
+      />
       <GoalInput
+        visible={modalIsVisible}
         inputHandler={goalInputHandler}
         goalText={enteredGoalText.text}
         handleSubmit={handleSubmit}
+        closeModal={setModalIsVisible}
       />
       <View style={styles.goalsContainer}>
         <FlatList
